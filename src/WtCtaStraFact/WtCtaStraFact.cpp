@@ -1,5 +1,6 @@
 ﻿#include "WtCtaStraFact.h"
 #include "WtStraDualThrust.h"
+#include "WtStraGrid.h"
 
 #include <string.h>
 #include <boost/config.hpp>
@@ -36,7 +37,8 @@ CtaStrategy* WtStraFact::createStrategy(const char* name, const char* id)
 {
 	if (strcmp(name, "DualThrust") == 0)
 		return new WtStraDualThrust(id);
-
+	else if (strcmp(name, "Grid") == 0)
+		return new WtStraGrid(id);
 	return NULL;
 }
 
