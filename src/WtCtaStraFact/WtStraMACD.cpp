@@ -51,7 +51,18 @@ bool WtStraMACD::init(WTSVariant* cfg) {
 
 void WtStraMACD::on_schedule(ICtaStraCtx *ctx, uint32_t curDate, uint32_t curTime)
 {
-    // TODO: 
+    double cur_pos = ctx->stra_get_position(_moncode.c_str());
+    if (cur_pos == 0) {
+        // 初始资金 + 当前盈亏计算出可用的钱
+        _cur_money = _capital + ctx->stra_get_fund_data(0);
+    }
+
+    // 一手所需要的钱
+    double cur_price = ctx->stra_get_price(_code.c_str());
+    double trdUnit_price = _vol_scale * _margin_rate * cur_price;
+    
+    WTSKlineSlice *kline = ctx->stra_get_bars(_code.c_str(), "d1", _bar_cnt, true);
+    // TODO: 实现ema
 }
 
 void WtStraMACD::on_init(ICtaStraCtx* ctx)
@@ -63,9 +74,10 @@ void WtStraMACD::on_init(ICtaStraCtx* ctx)
 	auto pInfo = ctx->stra_get_comminfo(_code.c_str());
 	_vol_scale = pInfo->getVolScale();
 
+    _cur_money = 0;
 
 	//注册指标和图表K线
-	ctx->set_chart_kline(_code.c_str(), _period.c_str());
+	ctx->set_chart_kline(_code.c_str(), "d1");
 	//注册指标
 	ctx->register_index("MACD", 0);
 }

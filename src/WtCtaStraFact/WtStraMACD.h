@@ -27,9 +27,6 @@ public:
 private:
     // 指标参数
 
-    // k线周期
-    std::string _period;
-
     // 一次获取k线条数
     u_int32_t _bar_cnt;
 
@@ -58,4 +55,5 @@ private:
     // 纯私有
     uint32_t _vol_scale;
     std::string _moncode;
+    double _cur_money;
 };
